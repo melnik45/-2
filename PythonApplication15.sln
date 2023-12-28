@@ -1,23 +1,76 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.9.34321.82
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PythonApplication15", "PythonApplication15\PythonApplication15.pyproj", "{FAA4F253-7A2C-4AD4-82E7-2A7991218125}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FAA4F253-7A2C-4AD4-82E7-2A7991218125}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FAA4F253-7A2C-4AD4-82E7-2A7991218125}.Release|Any CPU.ActiveCfg = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {25907388-CA26-41E8-8FF2-7C6FDFF484D0}
-	EndGlobalSection
-EndGlobal
+from abc import ABC, abstractmethod
+
+# Abstract Product: Faculty
+class Faculty(ABC):
+    @abstractmethod
+    def display_info(self):
+        pass
+
+# Concrete Product: EngineeringFaculty
+class EngineeringFaculty(Faculty):
+    def display_info(self):
+        return "Engineering Faculty"
+
+# Concrete Product: BusinessFaculty
+class BusinessFaculty(Faculty):
+    def display_info(self):
+        return "Business Faculty"
+
+# Abstract Product: Department
+class Department(ABC):
+    @abstractmethod
+    def display_info(self):
+        pass
+
+# Concrete Product: ComputerScienceDepartment
+class ComputerScienceDepartment(Department):
+    def display_info(self):
+        return "Computer Science Department"
+
+# Concrete Product: MarketingDepartment
+class MarketingDepartment(Department):
+    def display_info(self):
+        return "Marketing Department"
+
+# Abstract Factory: UniversityFactory
+class UniversityFactory(ABC):
+    @abstractmethod
+    def create_faculty(self) -> Faculty:
+        pass
+
+    @abstractmethod
+    def create_department(self) -> Department:
+        pass
+
+# Concrete Factory: EngineeringUniversityFactory
+class EngineeringUniversityFactory(UniversityFactory):
+    def create_faculty(self) -> Faculty:
+        return EngineeringFaculty()
+
+    def create_department(self) -> Department:
+        return ComputerScienceDepartment()
+
+# Concrete Factory: BusinessUniversityFactory
+class BusinessUniversityFactory(UniversityFactory):
+    def create_faculty(self) -> Faculty:
+        return BusinessFaculty()
+
+    def create_department(self) -> Department:
+        return MarketingDepartment()
+
+# Client Code
+def main():
+    # Choose the type of university you want to create
+    factory = EngineeringUniversityFactory()
+    # factory = BusinessUniversityFactory()
+
+    # Create the university components
+    faculty = factory.create_faculty()
+    department = factory.create_department()
+
+    # Display information about the university components
+    print("Faculty:", faculty.display_info())
+    print("Department:", department.display_info())
+
+if __name__ == "__main__":
+    main()
